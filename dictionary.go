@@ -1,19 +1,36 @@
 package main
 
-const DictNameMaxLength = 255
+const dictNameMaxLength = 255
 
-var DictContext *gf_dict
+var dictContext *gfDict
 
-type gf_dict struct {
-	name string
-	link *gf_dict
-	code uint32
+type gfDict struct {
+	name  string
+	flags byte
+	prev  *gfDict
+	link  *gfDict
+	code  uint32
 }
 
-func InitDictionary() {
+func initDictionary() {
 
 }
 
-func CreateDictionaryRecord(name string, code uint32, flag byte) {
+func createDictionaryEntry(name string, code uint32, flag byte) {
+	entry := gfDict{name: name, flags: flag, code: code}
 
+	if dictContext == nil {
+		dictContext = &entry
+	} else {
+		entry.prev, dictContext = dictContext, &entry
+	}
+}
+
+func addMachinePrimitives() {
+	createDictionaryEntry("EXIT", I_EXIT, 0)
+	createDictionaryEntry("+", I_PLUS, 0)
+	createDictionaryEntry("-", I_MINUS, 0)
+	createDictionaryEntry("*", I_MULT, 0)
+	createDictionaryEntry("/", I_DIV, 0)
+	createDictionaryEntry("NEGATE", I_NEG, 0)
 }

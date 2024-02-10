@@ -1,7 +1,7 @@
 package main
 
 const (
-	I_EXIT uint32 = 0
+	I_EXIT = iota
 	I_PLUS
 	I_MINUS
 	I_MULT
