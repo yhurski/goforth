@@ -1,10 +1,14 @@
 package main
 
-const DataStackDepth uint8 = 255
+// data stack, i.e. just "stack"
+const dataStackDepth uint8 = 255
 
-var DataStack [DataStackDepth]int = [DataStackDepth]int{}
+var dataStack *stack = CreateStack()
 
-var Sp uint8
+// return stack
+const returnStackDepth uint8 = 255
+
+var returnStack *stack = CreateStack()
 
 // current mode: false - interpreting, true - compiling
 var state bool = false
