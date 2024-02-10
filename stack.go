@@ -22,7 +22,7 @@ func (items *stack) Pop() int {
 	return result[0]
 }
 
-func (items *stack) popn(number int) []int {
+func (items *stack) Popn(number int) []int {
 
 	result := (*items)[items.Len()-number:]
 	*items = stack((*items)[:items.Len()-number])
