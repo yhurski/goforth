@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 const dictNameMaxLength = 255
 
 var dictContext *gfDict
@@ -12,8 +14,10 @@ type gfDict struct {
 	code  uint32
 }
 
-func initDictionary() {
+var codeSection []int = []int{}
 
+func initDictionary() {
+	addMachinePrimitives()
 }
 
 func createDictionaryEntry(name string, code uint32, flag byte) {
@@ -33,4 +37,25 @@ func addMachinePrimitives() {
 	createDictionaryEntry("*", I_MULT, 0)
 	createDictionaryEntry("/", I_DIV, 0)
 	createDictionaryEntry("NEGATE", I_NEG, 0)
+}
+
+func searchDictionary(name string) *gfDict {
+	if dictContext == nil {
+		return nil
+	}
+
+	nameCap := strings.ToUpper(name)
+	currentEntry := dictContext
+
+	for {
+		if currentEntry.name == nameCap {
+			return currentEntry
+		}
+
+		if currentEntry.prev == nil {
+			return nil
+		}
+
+		currentEntry = currentEntry.prev
+	}
 }

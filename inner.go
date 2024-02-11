@@ -8,6 +8,8 @@ import (
 )
 
 func DoForth() {
+	initDictionary()
+
 	var inputStr string
 	var err error
 	var words []string
@@ -31,5 +33,14 @@ func DoForth() {
 }
 
 func interpret(word string) {
-	// do something
+	findOrCompile(word)
+}
+
+func findOrCompile(word string) {
+	if !state {
+		searchDictionary(word)
+	} else {
+		// in compile mode
+	}
+
 }
