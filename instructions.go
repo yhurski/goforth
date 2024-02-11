@@ -1,5 +1,7 @@
 package main
 
+var lastPrimitiveId = I_NOOP
+
 const (
 	I_EXIT = iota
 	I_PLUS
@@ -7,6 +9,8 @@ const (
 	I_MULT
 	I_DIV
 	I_NEG
+
+	I_NOOP // must always be last
 )
 
 func exitOp() {

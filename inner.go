@@ -10,6 +10,8 @@ import (
 func DoForth() {
 	initDictionary()
 
+	fmt.Printf("%v\n", codeSection)
+
 	var inputStr string
 	var err error
 	var words []string
