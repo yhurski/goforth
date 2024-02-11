@@ -20,14 +20,16 @@ func initDictionary() {
 	addMachinePrimitives()
 }
 
-func createDictionaryEntry(name string, code uint32, flag byte) {
-	entry := gfDict{name: name, flags: flag, code: code}
+func createDictionaryEntry(name string, codePointer uint32, code []int, flag byte) {
+	entry := gfDict{name: name, flags: flag, code: codePointer}
 
 	if dictContext == nil {
 		dictContext = &entry
 	} else {
 		entry.prev, dictContext = dictContext, &entry
 	}
+
+	codeSection = append(codeSection, code...)
 }
 
 func addMachinePrimitives() {
