@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 func DoForth() {
@@ -13,31 +12,42 @@ func DoForth() {
 
 	fmt.Printf("%v\n", codeSection)
 
-	var inputStr string
+	// var inputStr string
 	var err error
-	var words []string
+	// var words []string
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
 		fmt.Print(">>> ")
 
-		inputStr, err = reader.ReadString('\n')
+		// inputStr, err = reader.ReadString('\n')
+		pIn = 0
+		inputBuffer, err = reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
 
-		words = strings.Fields(inputStr)
+		// words = strings.Fields(inputStr)
 
-		for _, word := range words {
-			interpret(word)
-		}
+		// for _, word := range words {
+		// 	interpret(word)
+		// }
+		interpret()
 	}
 }
 
-func interpret(word string) {
-	findOrCompile(word)
+func interpret() {
+	word, ok := getWord()
+
+	for ; ok; word, ok = getWord() {
+		findOrCompile(word)
+	}
 }
+
+// func interpret(word string) {
+// 	findOrCompile(word)
+// }
 
 func findOrCompile(word string) {
 	// fmt.Printf("word: %v\n", word)
@@ -55,7 +65,7 @@ func findOrCompile(word string) {
 
 			dataStack.Push(number)
 		}
-	} else { // in compiletion mode
+	} else { // in compilation mode
 
 	}
 

@@ -12,3 +12,9 @@ var returnStack *stack = CreateStack()
 
 // current mode: 0 - interpreting, 1 - compiling
 var state byte = 0
+
+// input buffer
+var inputBuffer string
+
+// >in pointer
+var pIn int = 0
