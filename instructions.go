@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 var lastPrimitiveId = I_NOOP
@@ -149,7 +150,16 @@ func executeOp() {
 // }
 
 func colonOp() {
+	word, ok := getWord()
+	if !ok { // no name provided, ignore silently
+		return
+	}
 
+	// add an entry to dict (not finished one though)
+	createDictionaryEntry(strings.ToUpper(word), uint32(len(codeSection)), []int{}, 0)
+
+	// switch machine mode to compiling
+	state = 1
 }
 
 func dotsOp() {
