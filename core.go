@@ -10,5 +10,5 @@ const returnStackDepth uint8 = 255
 
 var returnStack *stack = CreateStack()
 
-// current mode: false - interpreting, true - compiling
-var state bool = false
+// current mode: 0 - interpreting, 1 - compiling
+var state byte = 0

@@ -41,7 +41,7 @@ func interpret(word string) {
 
 func findOrCompile(word string) {
 	// fmt.Printf("word: %v\n", word)
-	if !state {
+	if state == 0 { // in interpretation mode
 		dictEntry := searchDictionary(word)
 		// fmt.Printf("dictEntry: %v\n", dictEntry)
 		if dictEntry != nil {
@@ -55,8 +55,8 @@ func findOrCompile(word string) {
 
 			dataStack.Push(number)
 		}
-	} else {
-		// in compile mode
+	} else { // in compiletion mode
+
 	}
 
 }
