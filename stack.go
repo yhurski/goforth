@@ -5,7 +5,7 @@ import "errors"
 type stack []int
 
 func CreateStack() *stack {
-	var st stack = make(stack, 255)
+	var st stack = make(stack, 0, 255)
 
 	return &st
 }
@@ -30,7 +30,7 @@ func (items *stack) Popn(number int) []int {
 	return result
 }
 
-func (items *stack) push(item int) (result bool, err error) {
+func (items *stack) Push(item int) (result bool, err error) {
 	if items.Len() < 255 {
 		*items = append(*items, item)
 		result, err = true, nil

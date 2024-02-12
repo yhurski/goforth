@@ -51,31 +51,31 @@ func exitOp() {
 
 func plusOp() {
 	operands := dataStack.Popn(2)
-	sum := operands[0] + operands[0]
-	dataStack.push(sum)
+	sum := operands[0] + operands[1]
+	dataStack.Push(sum)
 }
 
 func minusOp() {
 	operands := dataStack.Popn(2)
-	sum := operands[0] - operands[0]
-	dataStack.push(sum)
+	sum := operands[0] - operands[1]
+	dataStack.Push(sum)
 }
 
 func multOp() {
 	operands := dataStack.Popn(2)
-	sum := operands[0] * operands[0]
-	dataStack.push(sum)
+	sum := operands[0] * operands[1]
+	dataStack.Push(sum)
 }
 
 func divOp() {
 	operands := dataStack.Popn(2)
-	sum := operands[0] / operands[0]
-	dataStack.push(sum)
+	sum := operands[0] / operands[1]
+	dataStack.Push(sum)
 }
 
 func negateOp() {
 	operand := dataStack.Pop()
-	dataStack.push(-operand)
+	dataStack.Push(-operand)
 }
 
 func tickOp() {
@@ -86,7 +86,7 @@ func tickOp() {
 
 func executeOp() {
 	execToken := dataStack.Pop()
-	executePrimitive(execToken)
+	executePrimitive(int(execToken))
 }
 
 // func executeByToken(xt int) {
@@ -94,5 +94,5 @@ func executeOp() {
 // }
 
 func dotsOp() {
-	fmt.Printf("S[dataStack.len()]:%v\n", dataStack)
+	fmt.Printf("S[%d]:%v\n", dataStack.Len(), *dataStack)
 }

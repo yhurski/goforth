@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -39,8 +40,21 @@ func interpret(word string) {
 }
 
 func findOrCompile(word string) {
+	// fmt.Printf("word: %v\n", word)
 	if !state {
-		searchDictionary(word)
+		dictEntry := searchDictionary(word)
+		// fmt.Printf("dictEntry: %v\n", dictEntry)
+		if dictEntry != nil {
+			executePrimitive(int(dictEntry.code))
+		} else {
+			number, err := strconv.Atoi(word)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			dataStack.Push(number)
+		}
 	} else {
 		// in compile mode
 	}
