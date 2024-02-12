@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 var lastPrimitiveId = I_NOOP
@@ -94,5 +95,10 @@ func executeOp() {
 // }
 
 func dotsOp() {
-	fmt.Printf("S[%d]:%v\n", dataStack.Len(), *dataStack)
+	result := ""
+	for _, item := range *dataStack {
+		result += strconv.Itoa(item) + " "
+	}
+
+	fmt.Printf("S[%d]:%v\n", dataStack.Len(), result)
 }
