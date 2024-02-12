@@ -18,6 +18,7 @@ const (
 	I_DUP
 	I_DROP
 	I_SWAP
+	I_OVER
 
 	I_TICK
 	I_EXECUTE
@@ -48,6 +49,8 @@ func executePrimitive(execToken int) {
 		dropOp()
 	case I_SWAP:
 		swapOp()
+	case I_OVER:
+		overOp()
 	case I_TICK:
 		executeOp()
 	case I_EXECUTE:
@@ -105,6 +108,18 @@ func swapOp() {
 	secondOperand := dataStack.Pop()
 	dataStack.Push(firstOperand)
 	dataStack.Push(secondOperand)
+}
+
+func overOp() byte {
+	errCode := 0
+	if dataStack.Len() < 2 {
+		errCode = 1
+		return byte(errCode)
+	}
+	operand := (*dataStack)[dataStack.Len()-2]
+	dataStack.Push(operand)
+
+	return byte(errCode)
 }
 
 func tickOp() {

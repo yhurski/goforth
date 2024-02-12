@@ -43,6 +43,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry("DUP", I_DUP, []int{I_DUP}, 0)
 	createDictionaryEntry("DROP", I_DROP, []int{I_DROP}, 0)
 	createDictionaryEntry("SWAP", I_SWAP, []int{I_SWAP}, 0)
+	createDictionaryEntry("OVER", I_OVER, []int{I_OVER}, 0)
 	// '
 	// execute
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
