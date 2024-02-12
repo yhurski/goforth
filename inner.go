@@ -18,7 +18,7 @@ func DoForth() {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Print(">>> ")
+		printPrompt()
 
 		// inputStr, err = reader.ReadString('\n')
 		pIn = 0
@@ -69,4 +69,16 @@ func findOrCompile(word string) {
 
 	}
 
+}
+
+func printPrompt() {
+	var stateCharacter rune
+
+	if state == 1 { // compilation mode
+		stateCharacter = 'c'
+	} else { // interpretation mode
+		stateCharacter = '>'
+	}
+
+	fmt.Printf("%c>> ", stateCharacter)
 }
