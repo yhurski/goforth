@@ -23,6 +23,10 @@ const (
 	I_TICK
 	I_EXECUTE
 
+	// compiler operations
+	I_COLON
+
+	// helpers
 	I_DOTS
 
 	I_NOOP // must always be last
@@ -32,6 +36,7 @@ func executePrimitive(execToken int) {
 	switch execToken {
 	case I_EXIT:
 		exitOp()
+	// integer arithmetic
 	case I_PLUS:
 		plusOp()
 	case I_MINUS:
@@ -51,10 +56,16 @@ func executePrimitive(execToken int) {
 		swapOp()
 	case I_OVER:
 		overOp()
+	// dict operations
 	case I_TICK:
 		executeOp()
 	case I_EXECUTE:
 
+	// compiler operations
+	case I_COLON:
+		colonOp()
+
+	// helpers
 	case I_DOTS:
 		dotsOp()
 	}
@@ -136,6 +147,10 @@ func executeOp() {
 // func executeByToken(xt int) {
 
 // }
+
+func colonOp() {
+
+}
 
 func dotsOp() {
 	result := ""

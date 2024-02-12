@@ -34,6 +34,7 @@ func createDictionaryEntry(name string, codePointer uint32, code []int, flag byt
 
 func addMachinePrimitives() {
 	createDictionaryEntry("EXIT", I_EXIT, []int{I_EXIT}, 0)
+	// arithmetic operations
 	createDictionaryEntry("+", I_PLUS, []int{I_PLUS}, 0)
 	createDictionaryEntry("-", I_MINUS, []int{I_MINUS}, 0)
 	createDictionaryEntry("*", I_MULT, []int{I_MULT}, 0)
@@ -44,9 +45,13 @@ func addMachinePrimitives() {
 	createDictionaryEntry("DROP", I_DROP, []int{I_DROP}, 0)
 	createDictionaryEntry("SWAP", I_SWAP, []int{I_SWAP}, 0)
 	createDictionaryEntry("OVER", I_OVER, []int{I_OVER}, 0)
+
+	// compiler operations
+	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
 	// '
 	// execute
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
+	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
 }
 
 func searchDictionary(name string) *gfDict {
