@@ -14,6 +14,7 @@ const (
 	I_MULT
 	I_DIV
 	I_NEG
+	I_DUP
 
 	I_TICK
 	I_EXECUTE
@@ -37,6 +38,8 @@ func executePrimitive(execToken int) {
 		divOp()
 	case I_NEG:
 		negateOp()
+	case I_DUP:
+		dupOp()
 	case I_TICK:
 		executeOp()
 	case I_EXECUTE:
@@ -77,6 +80,12 @@ func divOp() {
 func negateOp() {
 	operand := dataStack.Pop()
 	dataStack.Push(-operand)
+}
+
+func dupOp() {
+	operand := dataStack.Pop()
+	dataStack.Push(operand)
+	dataStack.Push(operand)
 }
 
 func tickOp() {
