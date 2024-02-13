@@ -26,6 +26,8 @@ const (
 
 	// compiler operations
 	I_COLON
+	I_LITERAL
+	I_SEMICOLON
 
 	// helpers
 	I_DOTS
@@ -33,7 +35,22 @@ const (
 	I_NOOP // must always be last
 )
 
+func execute(execToken int) {
+	if execToken <= lastPrimitiveId {
+		executePrimitive(execToken)
+	} else {
+		executeUserDefinedToken(execToken)
+	}
+}
+
+func executeUserDefinedToken(execToken int) {
+	// ip = uint32(entry.code)
+
+}
+
 func executePrimitive(execToken int) {
+	ip = uint32(execToken)
+
 	switch execToken {
 	case I_EXIT:
 		exitOp()
@@ -65,6 +82,10 @@ func executePrimitive(execToken int) {
 	// compiler operations
 	case I_COLON:
 		colonOp()
+	case I_LITERAL:
+		literalOp()
+	case I_SEMICOLON:
+		semicolonOp()
 
 	// helpers
 	case I_DOTS:
@@ -73,7 +94,8 @@ func executePrimitive(execToken int) {
 }
 
 func exitOp() {
-
+	returnAddress := returnStack.Pop()
+	ip = uint32(returnAddress)
 }
 
 func plusOp() {
@@ -150,16 +172,50 @@ func executeOp() {
 // }
 
 func colonOp() {
-	word, ok := getWord()
-	if !ok { // no name provided, ignore silently
-		return
+	fmt.Println("!!! colon")
+	if state == 1 {
+		return // skip if already in compiling mode
 	}
+
+	word, _ := getWord()
+	// word, ok := getWord()
+	// if !ok { // no name provided, ignore silently
+	// 	return
+	// }
+
+	fmt.Printf("found word: %v\n", word)
 
 	// add an entry to dict (not finished one though)
 	createDictionaryEntry(strings.ToUpper(word), uint32(len(codeSection)), []int{}, 0)
 
 	// switch machine mode to compiling
 	state = 1
+}
+
+func literalOp() {
+	if state == 0 {
+		// dataStack.Pop()
+
+		// word, ok := getWord()
+		// if !ok { // no name provided, ignore silently
+		// 	return
+		// }
+
+		ip++
+		operand := codeSection[ip]
+		dataStack.Push(operand)
+	} else {
+
+	}
+}
+
+func semicolonOp() {
+	fmt.Printf("in semicolon\n")
+	if state == 1 { // in compiling mode
+		appendInsToCurrentDictEntry([]int{I_EXIT})
+	}
+
+	state = 0
 }
 
 func dotsOp() {
@@ -169,4 +225,12 @@ func dotsOp() {
 	}
 
 	fmt.Printf("S[%d]:%v\n", dataStack.Len(), result)
+}
+
+func appendInsToCurrentDictEntry(instructions []int) {
+	if state == 1 {
+		codeSection = append(codeSection, instructions...)
+	} else {
+		// produce an error
+	}
 }

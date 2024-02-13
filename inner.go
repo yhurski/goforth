@@ -53,7 +53,7 @@ func findOrCompile(word string) {
 	// fmt.Printf("word: %v\n", word)
 	if state == 0 { // in interpretation mode
 		dictEntry := searchDictionary(word)
-		// fmt.Printf("dictEntry: %v\n", dictEntry)
+		fmt.Printf("dictEntry: %v\n", dictEntry)
 		if dictEntry != nil {
 			executePrimitive(int(dictEntry.code))
 		} else {
@@ -66,7 +66,27 @@ func findOrCompile(word string) {
 			dataStack.Push(number)
 		}
 	} else { // in compilation mode
+		dictEntry := searchDictionary(word)
+		// fmt.Printf("dictEntry: %v\n", dictEntry)
+		if dictEntry != nil {
+			fmt.Printf("FOUND: %v\n", dictEntry.name)
+			if dictEntry.flags&immediateFlag == 1 {
+				executePrimitive(int(dictEntry.code))
+			} else {
+				appendInsToCurrentDictEntry([]int{int(dictEntry.code)})
+			}
+		} else {
+			number, err := strconv.Atoi(word)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 
+			literalEntry := searchDictionary("literal")
+
+			// compile a number with prepending LITERAL instruction
+			appendInsToCurrentDictEntry([]int{int(literalEntry.code), number})
+		}
 	}
 
 }

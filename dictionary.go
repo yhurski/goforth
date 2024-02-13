@@ -16,6 +16,10 @@ type gfDict struct {
 
 var codeSection []int = []int{}
 
+const (
+	immediateFlag = 0x1
+)
+
 func initDictionary() {
 	addMachinePrimitives()
 }
@@ -48,10 +52,11 @@ func addMachinePrimitives() {
 
 	// compiler operations
 	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
+	createDictionaryEntry("LITERAL", I_LITERAL, []int{I_LITERAL}, 0)
+	createDictionaryEntry(";", I_SEMICOLON, []int{I_SEMICOLON}, immediateFlag)
 	// '
 	// execute
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
-	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
 }
 
 func searchDictionary(name string) *gfDict {
