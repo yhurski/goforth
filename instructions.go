@@ -10,6 +10,7 @@ var lastPrimitiveId = I_NOOP
 
 const (
 	I_EXIT = iota
+	// integer arithmetic operations
 	I_PLUS
 	I_MINUS
 	I_MULT
@@ -20,6 +21,10 @@ const (
 	I_DROP
 	I_SWAP
 	I_OVER
+	// return stack operations
+	I_TO_R
+	I_FROM_R
+	I_R_FETCH
 
 	I_TICK
 	I_EXECUTE
@@ -54,7 +59,7 @@ func executePrimitive(execToken int) {
 	switch execToken {
 	case I_EXIT:
 		exitOp()
-	// integer arithmetic
+	// integer arithmetic operations
 	case I_PLUS:
 		plusOp()
 	case I_MINUS:
@@ -74,6 +79,13 @@ func executePrimitive(execToken int) {
 		swapOp()
 	case I_OVER:
 		overOp()
+	// return stack operations
+	case I_TO_R:
+		toROp()
+	case I_FROM_R:
+		fromROp()
+	case I_R_FETCH:
+		rFetch()
 	// dict operations
 	case I_TICK:
 		executeOp()
@@ -154,6 +166,31 @@ func overOp() byte {
 	dataStack.Push(operand)
 
 	return byte(errCode)
+}
+
+func toROp() {
+	operand := dataStack.Pop()
+	returnStack.Push(operand)
+}
+
+func fromROp() {
+	var operand int = 0
+
+	if returnStack.Len() > 0 {
+		operand = returnStack.Pop()
+	}
+
+	dataStack.Push(operand)
+}
+
+func rFetch() {
+	var operand int = 0
+
+	if returnStack.Len() > 0 {
+		operand = returnStack.Get(returnStack.Len() - 1)
+	}
+
+	dataStack.Push(operand)
 }
 
 func tickOp() {

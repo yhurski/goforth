@@ -40,3 +40,7 @@ func (items *stack) Push(item int) (result bool, err error) {
 
 	return
 }
+
+func (items *stack) Get(index int) int {
+	return (*items)[index]
+}
