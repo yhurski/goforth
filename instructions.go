@@ -25,7 +25,7 @@ const (
 	I_TO_R
 	I_FROM_R
 	I_R_FETCH
-
+	// dict operations
 	I_TICK
 	I_EXECUTE
 
@@ -96,9 +96,9 @@ func executePrimitive(execToken int) {
 		rFetch()
 	// dict operations
 	case I_TICK:
-		executeOp()
-	case I_EXECUTE:
 
+	case I_EXECUTE:
+		executeOp()
 	// compiler operations
 	case I_COLON:
 		colonOp()
@@ -215,7 +215,7 @@ func tickOp() {
 
 func executeOp() {
 	execToken := dataStack.Pop()
-	executePrimitive(int(execToken))
+	execute(int(execToken))
 }
 
 // func executeByToken(xt int) {

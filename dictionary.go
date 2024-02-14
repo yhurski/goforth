@@ -53,6 +53,8 @@ func addMachinePrimitives() {
 	createDictionaryEntry(">R", I_TO_R, []int{I_TO_R}, 0)
 	createDictionaryEntry("R>", I_FROM_R, []int{I_FROM_R}, 0)
 	createDictionaryEntry("R@", I_R_FETCH, []int{I_R_FETCH}, 0)
+	// dict operations
+	createDictionaryEntry("EXECUTE", I_EXECUTE, []int{I_EXECUTE}, 0)
 
 	// compiler operations
 	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
