@@ -96,7 +96,7 @@ func executePrimitive(execToken int) {
 		rFetch()
 	// dict operations
 	case I_TICK:
-
+		tickOp()
 	case I_EXECUTE:
 		executeOp()
 	// compiler operations
@@ -208,9 +208,17 @@ func rFetch() {
 }
 
 func tickOp() {
-	// get next word from buffer
-	// search for the word in the dict
-	// push the word' xt onto stack
+	word, ok := getWord()
+	if !ok { // no name provided, ignore silently
+		return
+	}
+
+	dictEntry := searchDictionary(word)
+	if dictEntry == nil {
+		return
+	}
+
+	dataStack.Push(int(dictEntry.code))
 }
 
 func executeOp() {
