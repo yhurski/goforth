@@ -253,6 +253,7 @@ func literalOp() {
 		// }
 
 		ip++
+		fmt.Printf("literalOp ip: %v\n", ip)
 		operand := codeSection[ip]
 		dataStack.Push(operand)
 	} else {
