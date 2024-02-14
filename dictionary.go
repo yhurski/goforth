@@ -63,8 +63,10 @@ func addMachinePrimitives() {
 	createDictionaryEntry(";", I_SEMICOLON, []int{I_SEMICOLON}, immediateFlag)
 	// '
 	// execute
-	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
+	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
+
+	createDictionaryEntry("NOOP", I_NOOP, []int{I_NOOP}, 0)
 }
 
 func searchDictionary(name string) *gfDict {

@@ -43,6 +43,7 @@ const (
 
 func execute(execToken int) {
 	fmt.Printf("execToken: %v\n", execToken)
+	fmt.Printf("lastPrimitiveId: %v\n", lastPrimitiveId)
 	if execToken <= lastPrimitiveId {
 		executePrimitive(execToken)
 	} else {
@@ -112,6 +113,9 @@ func executePrimitive(execToken int) {
 		dotsOp()
 	case I_WORDS:
 		wordsOp()
+
+	case I_NOOP:
+		break
 	}
 }
 
