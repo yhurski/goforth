@@ -36,6 +36,7 @@ const (
 
 	// helpers
 	I_DOTS
+	I_WORDS
 
 	I_NOOP // must always be last
 )
@@ -109,6 +110,8 @@ func executePrimitive(execToken int) {
 	// helpers
 	case I_DOTS:
 		dotsOp()
+	case I_WORDS:
+		wordsOp()
 	}
 }
 
@@ -273,6 +276,19 @@ func dotsOp() {
 	}
 
 	fmt.Printf("S[%d]:%v\n", dataStack.Len(), result)
+}
+
+func wordsOp() {
+	if dictContext != nil {
+
+		for currentEntry, li := dictContext, 1; currentEntry != nil; currentEntry, li = currentEntry.prev, li+1 {
+			fmt.Printf("%-10v", currentEntry.name)
+
+			if li%5 == 0 {
+				fmt.Print("\n")
+			}
+		}
+	}
 }
 
 func appendInsToCurrentDictEntry(instructions []int) {
