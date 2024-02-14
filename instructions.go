@@ -41,6 +41,7 @@ const (
 )
 
 func execute(execToken int) {
+	fmt.Printf("execToken: %v\n", execToken)
 	if execToken <= lastPrimitiveId {
 		executePrimitive(execToken)
 	} else {
@@ -49,6 +50,12 @@ func execute(execToken int) {
 }
 
 func executeUserDefinedToken(execToken int) {
+	// execToken is an offset of a word in the chain of instructions in
+	// an user-defined word
+	nextToken := codeSection[execToken]
+	fmt.Printf("execToken: %v, nextToken: %v\n", execToken, nextToken)
+	execute(nextToken)
+
 	// ip = uint32(entry.code)
 
 }
@@ -106,8 +113,12 @@ func executePrimitive(execToken int) {
 }
 
 func exitOp() {
-	returnAddress := returnStack.Pop()
-	ip = uint32(returnAddress)
+	if returnStack.Len() > 0 {
+		returnAddress := returnStack.Pop()
+		ip = uint32(returnAddress)
+
+		execute(int(ip))
+	}
 }
 
 func plusOp() {

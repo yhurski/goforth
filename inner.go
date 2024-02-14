@@ -55,7 +55,8 @@ func findOrCompile(word string) {
 		dictEntry := searchDictionary(word)
 		fmt.Printf("dictEntry: %v\n", dictEntry)
 		if dictEntry != nil {
-			executePrimitive(int(dictEntry.code))
+			// executePrimitive(int(dictEntry.code))
+			execute(int(dictEntry.code))
 		} else {
 			number, err := strconv.Atoi(word)
 			if err != nil {
@@ -73,7 +74,12 @@ func findOrCompile(word string) {
 			if dictEntry.flags&immediateFlag == 1 {
 				executePrimitive(int(dictEntry.code))
 			} else {
-				appendInsToCurrentDictEntry([]int{int(dictEntry.code)})
+				if dictEntry.code > uint32(lastPrimitiveId) { // user-defined word
+					prologCode := []int{I_LITERAL, len(codeSection) + 4, I_TO_R, int(dictEntry.code)}
+					appendInsToCurrentDictEntry(prologCode)
+				} else {
+					appendInsToCurrentDictEntry([]int{int(dictEntry.code)})
+				}
 			}
 		} else {
 			number, err := strconv.Atoi(word)
@@ -82,12 +88,12 @@ func findOrCompile(word string) {
 				return
 			}
 
-			literalEntry := searchDictionary("literal")
-
 			// compile a number with prepending LITERAL instruction
-			appendInsToCurrentDictEntry([]int{int(literalEntry.code), number})
+			appendInsToCurrentDictEntry([]int{I_LITERAL, number})
 		}
 	}
+
+	fmt.Printf("%v\n", codeSection)
 
 }
 
