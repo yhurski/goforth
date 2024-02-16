@@ -67,7 +67,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
 	// system variables
 	createDictionaryEntry("STATE", I_STATE, []int{I_STATE}, 0)
-	// createDictionaryEntry(">IN", I_GREATER_THAN_IN, []int{I_GREATER_THAN_IN}, 0)
+	createDictionaryEntry(">IN", I_GREATER_THAN_IN, []int{I_GREATER_THAN_IN}, 0)
 	// variables
 	createDictionaryEntry("@", I_DEREFERENCE, []int{I_DEREFERENCE}, 0)
 

@@ -43,6 +43,7 @@ const (
 
 	// system variables
 	I_STATE
+	I_GREATER_THAN_IN
 	// variables
 
 	I_DEREFERENCE
@@ -137,6 +138,8 @@ func executePrimitive(execToken int) {
 	// system variables
 	case I_STATE:
 		stateOp()
+	case I_GREATER_THAN_IN:
+		greaterThanIn()
 	// variables
 	case I_DEREFERENCE:
 		dereferenceOp()
@@ -340,6 +343,11 @@ func wordsOp() {
 
 func stateOp() {
 	address, _ := strconv.Atoi(fmt.Sprintf("%d", &state))
+	dataStack.Push(address)
+}
+
+func greaterThanIn() {
+	address, _ := strconv.Atoi(fmt.Sprintf("%d", &pIn))
 	dataStack.Push(address)
 }
 
