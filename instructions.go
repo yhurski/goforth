@@ -8,6 +8,8 @@ import (
 
 var lastPrimitiveId = I_NOOP
 
+var nestingLevel = 0
+
 const (
 	I_EXIT = iota
 	// integer arithmetic operations
@@ -41,29 +43,46 @@ const (
 	I_NOOP // must always be last
 )
 
+func next() {
+	fmt.Printf("next: nestingLevel: %v, ip: %v\n", nestingLevel, ip)
+	if nestingLevel > 0 {
+		ip++
+		// nextToken := codeSection[execToken]
+		nextToken := codeSection[ip]
+		// execute(int(ip))
+		execute(nextToken)
+	}
+}
+
 func execute(execToken int) {
+	// ip = uint32(execToken)
 	fmt.Printf("execToken: %v\n", execToken)
-	fmt.Printf("lastPrimitiveId: %v\n", lastPrimitiveId)
+	// fmt.Printf("lastPrimitiveId: %v\n", lastPrimitiveId)
 	if execToken <= lastPrimitiveId {
 		executePrimitive(execToken)
 	} else {
 		executeUserDefinedToken(execToken)
 	}
+
+	next()
 }
 
 func executeUserDefinedToken(execToken int) {
 	// execToken is an offset of a word in the chain of instructions in
 	// an user-defined word
+	nestingLevel++
+	ip = uint32(execToken)
 	nextToken := codeSection[execToken]
 	fmt.Printf("execToken: %v, nextToken: %v\n", execToken, nextToken)
 	execute(nextToken)
+	// executePrimitive(nextToken)
 
 	// ip = uint32(entry.code)
 
 }
 
 func executePrimitive(execToken int) {
-	ip = uint32(execToken)
+	// ip = uint32(execToken)
 
 	switch execToken {
 	case I_EXIT:
@@ -120,11 +139,17 @@ func executePrimitive(execToken int) {
 }
 
 func exitOp() {
+	if nestingLevel > 0 {
+		nestingLevel--
+	}
 	if returnStack.Len() > 0 {
 		returnAddress := returnStack.Pop()
 		ip = uint32(returnAddress)
 
-		execute(int(ip))
+		nextToken := codeSection[ip]
+
+		// execute(int(ip))
+		execute(nextToken)
 	}
 }
 
@@ -268,6 +293,7 @@ func literalOp() {
 		fmt.Printf("literalOp ip: %v\n", ip)
 		operand := codeSection[ip]
 		dataStack.Push(operand)
+		// ip++
 	} else {
 
 	}
