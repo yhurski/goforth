@@ -43,21 +43,9 @@ const (
 	I_NOOP // must always be last
 )
 
-func next() {
-	fmt.Printf("next: nestingLevel: %v, ip: %v\n", nestingLevel, ip)
-	if nestingLevel > 0 {
-		ip++
-		// nextToken := codeSection[execToken]
-		nextToken := codeSection[ip]
-		// execute(int(ip))
-		execute(nextToken)
-	}
-}
-
 func execute(execToken int) {
-	// ip = uint32(execToken)
 	fmt.Printf("execToken: %v\n", execToken)
-	// fmt.Printf("lastPrimitiveId: %v\n", lastPrimitiveId)
+
 	if execToken <= lastPrimitiveId {
 		executePrimitive(execToken)
 	} else {
@@ -74,11 +62,17 @@ func executeUserDefinedToken(execToken int) {
 	ip = uint32(execToken)
 	nextToken := codeSection[execToken]
 	fmt.Printf("execToken: %v, nextToken: %v\n", execToken, nextToken)
+
 	execute(nextToken)
-	// executePrimitive(nextToken)
+}
 
-	// ip = uint32(entry.code)
-
+func next() {
+	fmt.Printf("next: nestingLevel: %v, ip: %v\n", nestingLevel, ip)
+	if nestingLevel > 0 {
+		ip++
+		nextToken := codeSection[ip]
+		execute(nextToken)
+	}
 }
 
 func executePrimitive(execToken int) {
