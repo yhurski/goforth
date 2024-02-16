@@ -14,7 +14,7 @@ var returnStack *stack = CreateStack()
 var ip uint32 = 0
 
 // current mode: 0 - interpreting, 1 - compiling
-var state byte = 0
+var state int = 0
 
 // input buffer
 var inputBuffer string

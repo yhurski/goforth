@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unsafe"
 )
 
 var lastPrimitiveId = I_NOOP
@@ -42,6 +43,9 @@ const (
 
 	// system variables
 	I_STATE
+	// variables
+
+	I_DEREFERENCE
 
 	I_NOOP // must always be last
 )
@@ -133,6 +137,9 @@ func executePrimitive(execToken int) {
 	// system variables
 	case I_STATE:
 		stateOp()
+	// variables
+	case I_DEREFERENCE:
+		dereferenceOp()
 
 	case I_NOOP:
 		break
@@ -334,6 +341,14 @@ func wordsOp() {
 func stateOp() {
 	address, _ := strconv.Atoi(fmt.Sprintf("%d", &state))
 	dataStack.Push(address)
+}
+
+func dereferenceOp() {
+	address := dataStack.Pop()
+	unsafePointer := unsafe.Pointer(uintptr(address))
+	value := *(*int)(unsafePointer)
+
+	dataStack.Push(value)
 }
 
 func appendInsToCurrentDictEntry(instructions []int) {
