@@ -65,6 +65,8 @@ func addMachinePrimitives() {
 	// execute
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
 	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
+	// system variables
+	createDictionaryEntry("STATE", I_STATE, []int{I_STATE}, 0)
 
 	createDictionaryEntry("NOOP", I_NOOP, []int{I_NOOP}, 0)
 }

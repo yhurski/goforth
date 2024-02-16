@@ -40,6 +40,9 @@ const (
 	I_DOTS
 	I_WORDS
 
+	// system variables
+	I_STATE
+
 	I_NOOP // must always be last
 )
 
@@ -126,6 +129,10 @@ func executePrimitive(execToken int) {
 		dotsOp()
 	case I_WORDS:
 		wordsOp()
+
+	// system variables
+	case I_STATE:
+		stateOp()
 
 	case I_NOOP:
 		break
@@ -322,6 +329,11 @@ func wordsOp() {
 			}
 		}
 	}
+}
+
+func stateOp() {
+	address, _ := strconv.Atoi(fmt.Sprintf("%d", &state))
+	dataStack.Push(address)
 }
 
 func appendInsToCurrentDictEntry(instructions []int) {
