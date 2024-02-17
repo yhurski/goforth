@@ -49,7 +49,7 @@ func findOrCompile(word string) {
 		} else {
 			number, err := strconv.Atoi(word)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Println("word not found!")
 				return
 			}
 
