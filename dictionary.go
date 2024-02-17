@@ -47,6 +47,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry("MOD", I_MOD, []int{I_MOD}, 0)
 	createDictionaryEntry("ABS", I_ABS, []int{I_ABS}, 0)
 	createDictionaryEntry("MAX", I_MAX, []int{I_MAX}, 0)
+	createDictionaryEntry("MIN", I_MIN, []int{I_MIN}, 0)
 	// stack operations
 	createDictionaryEntry("DUP", I_DUP, []int{I_DUP}, 0)
 	createDictionaryEntry("DROP", I_DROP, []int{I_DROP}, 0)
