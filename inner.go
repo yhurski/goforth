@@ -1,38 +1,31 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
+
+	"github.com/chzyer/readline"
 )
 
 func DoForth() {
 	initDictionary()
+	rlInstance, err := initReadline()
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Printf("%v\n", codeSection)
 
-	// var inputStr string
-	var err error
-	// var words []string
-	reader := bufio.NewReader(os.Stdin)
-
 	for {
-		printPrompt()
+		printPrompt(rlInstance)
 
-		// inputStr, err = reader.ReadString('\n')
 		pIn = 0
-		inputBuffer, err = reader.ReadString('\n')
+		inputBuffer, err = rlInstance.Readline()
 		if err != nil {
 			fmt.Println(err)
-			continue
+			break
 		}
 
-		// words = strings.Fields(inputStr)
-
-		// for _, word := range words {
-		// 	interpret(word)
-		// }
 		interpret()
 	}
 }
@@ -44,10 +37,6 @@ func interpret() {
 		findOrCompile(word)
 	}
 }
-
-// func interpret(word string) {
-// 	findOrCompile(word)
-// }
 
 func findOrCompile(word string) {
 	// fmt.Printf("word: %v\n", word)
@@ -97,7 +86,11 @@ func findOrCompile(word string) {
 
 }
 
-func printPrompt() {
+func initReadline() (*readline.Instance, error) {
+	return readline.New(">>> ")
+}
+
+func printPrompt(rl *readline.Instance) {
 	var stateCharacter rune
 
 	if state == 1 { // compilation mode
@@ -106,5 +99,5 @@ func printPrompt() {
 		stateCharacter = '>'
 	}
 
-	fmt.Printf("%c>> ", stateCharacter)
+	rl.SetPrompt(fmt.Sprintf("%c>> ", stateCharacter))
 }
