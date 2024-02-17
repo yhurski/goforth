@@ -22,6 +22,7 @@ const (
 	// stack operations
 	I_DUP
 	I_DROP
+	I_DOT
 	I_SWAP
 	I_OVER
 	// return stack operations
@@ -103,7 +104,7 @@ func executePrimitive(execToken int) {
 	// stack operations
 	case I_DUP:
 		dupOp()
-	case I_DROP:
+	case I_DROP, I_DOT:
 		dropOp()
 	case I_SWAP:
 		swapOp()
