@@ -19,6 +19,7 @@ const (
 	I_MULT
 	I_DIV
 	I_NEG
+	I_MOD
 	// stack operations
 	I_DUP
 	I_DROP
@@ -101,6 +102,8 @@ func executePrimitive(execToken int) {
 		divOp()
 	case I_NEG:
 		negateOp()
+	case I_MOD:
+		modOp()
 	// stack operations
 	case I_DUP:
 		dupOp()
@@ -192,6 +195,12 @@ func divOp() {
 func negateOp() {
 	operand := dataStack.Pop()
 	dataStack.Push(-operand)
+}
+
+func modOp() {
+	operands := dataStack.Popn(2)
+	sum := operands[0] % operands[1]
+	dataStack.Push(sum)
 }
 
 func dupOp() {
