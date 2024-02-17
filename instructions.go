@@ -22,6 +22,7 @@ const (
 	I_NEG
 	I_MOD
 	I_ABS
+	I_MAX
 	// stack operations
 	I_DUP
 	I_DROP
@@ -108,6 +109,8 @@ func executePrimitive(execToken int) {
 		modOp()
 	case I_ABS:
 		absOp()
+	case I_MAX:
+		maxOp()
 	// stack operations
 	case I_DUP:
 		dupOp()
@@ -211,6 +214,12 @@ func absOp() {
 	operand := dataStack.Pop()
 	operand = int(math.Abs(float64(operand)))
 	dataStack.Push(operand)
+}
+
+func maxOp() {
+	operands := dataStack.Popn(2)
+	result := max(operands[0], operands[1])
+	dataStack.Push(result)
 }
 
 func dupOp() {
