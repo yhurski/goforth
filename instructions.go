@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -46,6 +47,7 @@ const (
 	// helpers
 	I_DOTS
 	I_WORDS
+	I_BYE
 
 	// system variables
 	I_STATE
@@ -148,6 +150,8 @@ func executePrimitive(execToken int) {
 		dotsOp()
 	case I_WORDS:
 		wordsOp()
+	case I_BYE:
+		byeOp()
 
 	// system variables
 	case I_STATE:
@@ -377,6 +381,11 @@ func wordsOp() {
 			}
 		}
 	}
+}
+
+func byeOp() {
+	dotsOp()
+	os.Exit(0)
 }
 
 func stateOp() {

@@ -66,10 +66,10 @@ func addMachinePrimitives() {
 	createDictionaryEntry(":", I_COLON, []int{I_COLON}, 0)
 	createDictionaryEntry("LITERAL", I_LITERAL, []int{I_LITERAL}, 0)
 	createDictionaryEntry(";", I_SEMICOLON, []int{I_SEMICOLON}, immediateFlag)
-	// '
-	// execute
+	// helpers
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
 	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
+	createDictionaryEntry("BYE", I_BYE, []int{I_BYE}, 0)
 	// system variables
 	createDictionaryEntry("STATE", I_STATE, []int{I_STATE}, 0)
 	createDictionaryEntry(">IN", I_GREATER_THAN_IN, []int{I_GREATER_THAN_IN}, 0)
