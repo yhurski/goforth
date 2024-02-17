@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -20,6 +21,7 @@ const (
 	I_DIV
 	I_NEG
 	I_MOD
+	I_ABS
 	// stack operations
 	I_DUP
 	I_DROP
@@ -104,6 +106,8 @@ func executePrimitive(execToken int) {
 		negateOp()
 	case I_MOD:
 		modOp()
+	case I_ABS:
+		absOp()
 	// stack operations
 	case I_DUP:
 		dupOp()
@@ -201,6 +205,12 @@ func modOp() {
 	operands := dataStack.Popn(2)
 	sum := operands[0] % operands[1]
 	dataStack.Push(sum)
+}
+
+func absOp() {
+	operand := dataStack.Pop()
+	operand = int(math.Abs(float64(operand)))
+	dataStack.Push(operand)
 }
 
 func dupOp() {
