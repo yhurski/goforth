@@ -33,6 +33,7 @@ const (
 	I_OVER
 	I_ROT
 	I_NIP
+	I_TUCK
 	// return stack operations
 	I_TO_R
 	I_FROM_R
@@ -131,6 +132,8 @@ func executePrimitive(execToken int) {
 		rotOp()
 	case I_NIP:
 		nipOp()
+	case I_TUCK:
+		tuckOp()
 	// return stack operations
 	case I_TO_R:
 		toROp()
@@ -282,6 +285,14 @@ func rotOp() {
 func nipOp() {
 	operand1 := dataStack.Pop()
 	dataStack.Pop()
+	dataStack.Push(operand1)
+}
+
+func tuckOp() {
+	operand1 := dataStack.Pop()
+	operand2 := dataStack.Pop()
+	dataStack.Push(operand1)
+	dataStack.Push(operand2)
 	dataStack.Push(operand1)
 }
 
