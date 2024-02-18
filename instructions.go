@@ -34,6 +34,7 @@ const (
 	I_ROT
 	I_NIP
 	I_TUCK
+	I_ROLL
 	// return stack operations
 	I_TO_R
 	I_FROM_R
@@ -134,6 +135,8 @@ func executePrimitive(execToken int) {
 		nipOp()
 	case I_TUCK:
 		tuckOp()
+	case I_ROLL:
+		rollOp()
 	// return stack operations
 	case I_TO_R:
 		toROp()
@@ -294,6 +297,26 @@ func tuckOp() {
 	dataStack.Push(operand1)
 	dataStack.Push(operand2)
 	dataStack.Push(operand1)
+}
+
+func rollOp() {
+	// 1 3 4 2 10 20 30 40 50
+	// 4 roll .s
+	// 1 3 4 2 20 30 40 50 10
+	if dataStack.Len() > 1 {
+		offset := dataStack.Pop()
+		itemToRoll := 0
+
+		if offset < dataStack.Len() {
+			bottomOffset := dataStack.Len() - offset - 1
+			itemToRoll = dataStack.Get(bottomOffset)
+			fmt.Printf("dataStack.Len(): %v, itemToRoll: %v\n", dataStack.Len(), itemToRoll)
+			copy((*dataStack)[bottomOffset:], (*dataStack)[bottomOffset+1:])
+			*dataStack = (*dataStack)[:dataStack.Len()-1]
+		}
+
+		dataStack.Push(itemToRoll)
+	}
 }
 
 func toROp() {
