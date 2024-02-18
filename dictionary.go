@@ -55,6 +55,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry("SWAP", I_SWAP, []int{I_SWAP}, 0)
 	createDictionaryEntry("OVER", I_OVER, []int{I_OVER}, 0)
 	createDictionaryEntry("ROT", I_ROT, []int{I_ROT}, 0)
+	createDictionaryEntry("NIP", I_NIP, []int{I_NIP}, 0)
 	// return stack operations
 	createDictionaryEntry(">R", I_TO_R, []int{I_TO_R}, 0)
 	createDictionaryEntry("R>", I_FROM_R, []int{I_FROM_R}, 0)

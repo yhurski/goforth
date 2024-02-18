@@ -32,6 +32,7 @@ const (
 	I_SWAP
 	I_OVER
 	I_ROT
+	I_NIP
 	// return stack operations
 	I_TO_R
 	I_FROM_R
@@ -128,6 +129,8 @@ func executePrimitive(execToken int) {
 		overOp()
 	case I_ROT:
 		rotOp()
+	case I_NIP:
+		nipOp()
 	// return stack operations
 	case I_TO_R:
 		toROp()
@@ -274,6 +277,12 @@ func rotOp() {
 	dataStack.Push(operand2)
 	dataStack.Push(operand1)
 	dataStack.Push(operand3)
+}
+
+func nipOp() {
+	operand1 := dataStack.Pop()
+	dataStack.Pop()
+	dataStack.Push(operand1)
 }
 
 func toROp() {
