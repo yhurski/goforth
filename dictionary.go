@@ -58,6 +58,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry("NIP", I_NIP, []int{I_NIP}, 0)
 	createDictionaryEntry("TUCK", I_TUCK, []int{I_TUCK}, 0)
 	createDictionaryEntry("ROLL", I_ROLL, []int{I_ROLL}, 0)
+	createDictionaryEntry("PICK", I_PICK, []int{I_PICK}, 0)
 	// return stack operations
 	createDictionaryEntry(">R", I_TO_R, []int{I_TO_R}, 0)
 	createDictionaryEntry("R>", I_FROM_R, []int{I_FROM_R}, 0)
