@@ -474,6 +474,7 @@ func seeOp() {
 
 	dictEntry := searchDictionary(word)
 	if dictEntry == nil {
+		fmt.Println("Name not found!")
 		return
 	}
 
@@ -491,14 +492,17 @@ func seeOp() {
 			definition = append(definition, strconv.Itoa(codeSection[wordIp]))
 		} else {
 			dictEntry = searchDictionaryByCode(uint32(codeSection[wordIp]))
-			definition = append(definition, dictEntry.name)
+			if isUserDefinedWord(dictEntry) {
+				// skip function call prolog
+				definition = definition[:len(definition)-2]
+			}
+			definition = append(definition, strings.ToLower(dictEntry.name))
 		}
 	}
 
 	definition = append(definition, ";")
 
 	fmt.Println(strings.Join(definition, " "))
-
 }
 
 func stateOp() {
