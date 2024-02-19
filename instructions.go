@@ -477,7 +477,7 @@ func seeOp() {
 		return
 	}
 
-	if dictEntry.code <= uint32(lastPrimitiveId) {
+	if isMachineWord(dictEntry) {
 		fmt.Printf("(%v) - The word is defined as machine primitive.\n", word)
 		return
 	}

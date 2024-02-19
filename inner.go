@@ -57,13 +57,12 @@ func findOrCompile(word string) {
 		}
 	} else { // in compilation mode
 		dictEntry := searchDictionary(word)
-		// fmt.Printf("dictEntry: %v\n", dictEntry)
 		if dictEntry != nil {
 			fmt.Printf("FOUND: %v\n", dictEntry.name)
 			if dictEntry.flags&immediateFlag == 1 {
 				executePrimitive(int(dictEntry.code))
 			} else {
-				if dictEntry.code > uint32(lastPrimitiveId) { // user-defined word
+				if isUserDefinedWord(dictEntry) { // user-defined word
 					prologCode := []int{I_LITERAL, len(codeSection) + 4, I_TO_R, int(dictEntry.code)}
 					appendInsToCurrentDictEntry(prologCode)
 				} else {

@@ -125,3 +125,11 @@ func searchDictionaryByCode(code uint32) *gfDict {
 		currentEntry = currentEntry.prev
 	}
 }
+
+func isMachineWord(entry *gfDict) bool {
+	return entry.code <= uint32(lastPrimitiveId)
+}
+
+func isUserDefinedWord(entry *gfDict) bool {
+	return !isMachineWord(entry)
+}
