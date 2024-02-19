@@ -53,6 +53,7 @@ const (
 	I_DOTS
 	I_WORDS
 	I_BYE
+	I_SEE
 
 	// system variables
 	I_STATE
@@ -167,6 +168,8 @@ func executePrimitive(execToken int) {
 		wordsOp()
 	case I_BYE:
 		byeOp()
+	case I_SEE:
+		seeOp()
 
 	// system variables
 	case I_STATE:
@@ -460,6 +463,42 @@ func wordsOp() {
 func byeOp() {
 	dotsOp()
 	os.Exit(0)
+}
+
+func seeOp() {
+	word, ok := getWord()
+	if !ok {
+		fmt.Println("No name provided!")
+		return
+	}
+
+	dictEntry := searchDictionary(word)
+	if dictEntry == nil {
+		return
+	}
+
+	if dictEntry.code <= uint32(lastPrimitiveId) {
+		fmt.Printf("(%v) - The word is defined as machine primitive.\n", word)
+		return
+	}
+
+	definition := []string{":", word}
+
+	for wordIp := dictEntry.code; codeSection[wordIp] != I_EXIT; wordIp++ {
+		code := codeSection[wordIp]
+		if code == I_LITERAL {
+			wordIp++
+			definition = append(definition, strconv.Itoa(codeSection[wordIp]))
+		} else {
+			dictEntry = searchDictionaryByCode(uint32(codeSection[wordIp]))
+			definition = append(definition, dictEntry.name)
+		}
+	}
+
+	definition = append(definition, ";")
+
+	fmt.Println(strings.Join(definition, " "))
+
 }
 
 func stateOp() {

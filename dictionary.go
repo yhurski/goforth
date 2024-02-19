@@ -75,6 +75,7 @@ func addMachinePrimitives() {
 	createDictionaryEntry(".S", I_DOTS, []int{I_DOTS}, 0)
 	createDictionaryEntry("WORDS", I_WORDS, []int{I_WORDS}, 0)
 	createDictionaryEntry("BYE", I_BYE, []int{I_BYE}, 0)
+	createDictionaryEntry("SEE", I_SEE, []int{I_SEE}, 0)
 	// system variables
 	createDictionaryEntry("STATE", I_STATE, []int{I_STATE}, 0)
 	createDictionaryEntry(">IN", I_GREATER_THAN_IN, []int{I_GREATER_THAN_IN}, 0)
@@ -94,6 +95,26 @@ func searchDictionary(name string) *gfDict {
 
 	for {
 		if currentEntry.name == nameCap {
+			return currentEntry
+		}
+
+		if currentEntry.prev == nil {
+			return nil
+		}
+
+		currentEntry = currentEntry.prev
+	}
+}
+
+func searchDictionaryByCode(code uint32) *gfDict {
+	if dictContext == nil {
+		return nil
+	}
+
+	currentEntry := dictContext
+
+	for {
+		if currentEntry.code == code {
 			return currentEntry
 		}
 
