@@ -1,4 +1,4 @@
-package main
+package forth
 
 // data stack, i.e. just "stack"
 const dataStackDepth uint8 = 255
