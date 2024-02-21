@@ -189,85 +189,136 @@ func exitOp() {
 	if nestingLevel > 0 {
 		nestingLevel--
 	}
-	if returnStack.Len() > 0 {
-		returnAddress := returnStack.Pop()
-		ip = uint32(returnAddress)
 
-		nextToken := codeSection[ip]
-
-		// execute(int(ip))
-		execute(nextToken)
+	returnAddress, err := returnStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+
+	ip = uint32(returnAddress)
+	nextToken := codeSection[ip]
+
+	execute(nextToken)
 }
 
 func plusOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	sum := operands[0] + operands[1]
 	dataStack.Push(sum)
 }
 
 func minusOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	sum := operands[0] - operands[1]
 	dataStack.Push(sum)
 }
 
 func multOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	sum := operands[0] * operands[1]
 	dataStack.Push(sum)
 }
 
 func divOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	sum := operands[0] / operands[1]
 	dataStack.Push(sum)
 }
 
 func negateOp() {
-	operand := dataStack.Pop()
+	operand, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	dataStack.Push(-operand)
 }
 
 func modOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	sum := operands[0] % operands[1]
 	dataStack.Push(sum)
 }
 
 func absOp() {
-	operand := dataStack.Pop()
+	operand, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	operand = int(math.Abs(float64(operand)))
 	dataStack.Push(operand)
 }
 
 func maxOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	result := max(operands[0], operands[1])
 	dataStack.Push(result)
 }
 
 func minOp() {
-	operands := dataStack.Popn(2)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	result := min(operands[0], operands[1])
 	dataStack.Push(result)
 }
 
 func dupOp() {
-	operand := dataStack.Pop()
+	operand, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	dataStack.Push(operand)
 	dataStack.Push(operand)
 }
 
 func dropOp() {
-	dataStack.Pop()
+	_, err := dataStack.Pop()
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func swapOp() {
-	firstOperand := dataStack.Pop()
-	secondOperand := dataStack.Pop()
-	dataStack.Push(firstOperand)
-	dataStack.Push(secondOperand)
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	dataStack.Push(operands[0])
+	dataStack.Push(operands[1])
 }
 
 func overOp() byte {
@@ -283,23 +334,37 @@ func overOp() byte {
 }
 
 func rotOp() {
-	operand1 := dataStack.Pop()
-	operand2 := dataStack.Pop()
-	operand3 := dataStack.Pop()
+	operands, err := dataStack.Popn(3)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	operand1, operand2, operand3 := operands[0], operands[1], operands[2]
 	dataStack.Push(operand2)
 	dataStack.Push(operand1)
 	dataStack.Push(operand3)
 }
 
 func nipOp() {
-	operand1 := dataStack.Pop()
-	dataStack.Pop()
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	operand1 := operands[0]
 	dataStack.Push(operand1)
 }
 
 func tuckOp() {
-	operand1 := dataStack.Pop()
-	operand2 := dataStack.Pop()
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	operand1, operand2 := operands[0], operands[1]
 	dataStack.Push(operand1)
 	dataStack.Push(operand2)
 	dataStack.Push(operand1)
@@ -309,50 +374,58 @@ func rollOp() {
 	// 1 3 4 2 10 20 30 40 50
 	// 4 roll .s
 	// 1 3 4 2 20 30 40 50 10
-	if dataStack.Len() > 1 {
-		offset := dataStack.Pop()
-		itemToRoll := 0
-
-		if offset < dataStack.Len() {
-			bottomOffset := dataStack.Len() - offset - 1
-			itemToRoll = dataStack.Get(bottomOffset)
-			copy((*dataStack)[bottomOffset:], (*dataStack)[bottomOffset+1:])
-			*dataStack = (*dataStack)[:dataStack.Len()-1]
-		}
-
-		dataStack.Push(itemToRoll)
+	offset, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+
+	itemToRoll := 0
+
+	if offset < dataStack.Len() {
+		bottomOffset := dataStack.Len() - offset - 1
+		itemToRoll = dataStack.Get(bottomOffset)
+		copy((*dataStack)[bottomOffset:], (*dataStack)[bottomOffset+1:])
+		*dataStack = (*dataStack)[:dataStack.Len()-1]
+	}
+
+	dataStack.Push(itemToRoll)
 }
 
 func pickOp() {
 	// 1 3 4 2 10 20 30 40 50
 	// 4 pick .s
 	// 1 3 4 2 10 20 30 40 50 10
-	if dataStack.Len() > 1 {
-		offset := dataStack.Pop()
-		itemToPick := 0
-
-		if offset < dataStack.Len() {
-			bottomOffset := dataStack.Len() - offset - 1
-			itemToPick = dataStack.Get(bottomOffset)
-		}
-
-		dataStack.Push(itemToPick)
+	offset, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+
+	itemToPick := 0
+
+	if offset < dataStack.Len() {
+		bottomOffset := dataStack.Len() - offset - 1
+		itemToPick = dataStack.Get(bottomOffset)
+	}
+
+	dataStack.Push(itemToPick)
 }
 
 func toROp() {
-	operand := dataStack.Pop()
+	operand, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	returnStack.Push(operand)
 }
 
 func fromROp() {
 	var operand int = 0
 
-	if returnStack.Len() > 0 {
-		operand = returnStack.Pop()
-	}
-
+	operand, _ = returnStack.Pop()
 	dataStack.Push(operand)
 }
 
@@ -381,13 +454,14 @@ func tickOp() {
 }
 
 func executeOp() {
-	execToken := dataStack.Pop()
+	execToken, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	execute(int(execToken))
 }
-
-// func executeByToken(xt int) {
-
-// }
 
 func colonOp() {
 	fmt.Println("!!! colon")
@@ -517,7 +591,12 @@ func greaterThanIn() {
 }
 
 func dereferenceOp() {
-	address := dataStack.Pop()
+	address, err := dataStack.Pop()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	unsafePointer := unsafe.Pointer(uintptr(address))
 	value := *(*int)(unsafePointer)
 
