@@ -404,7 +404,7 @@ func colonOp() {
 	fmt.Printf("found word: %v\n", word)
 
 	// add an entry to dict (not finished one though)
-	createDictionaryEntry(strings.ToUpper(word), uint32(len(codeSection)), []int{}, 0)
+	createDictionaryEntry(strings.ToUpper(word), uint32(len(codeSection)), []int{}, smudgeFlag)
 
 	// switch machine mode to compiling
 	state = 1
@@ -433,6 +433,7 @@ func semicolonOp() {
 	fmt.Printf("in semicolon\n")
 	if state == 1 { // in compiling mode
 		appendInsToCurrentDictEntry([]int{I_EXIT})
+		dictContext.flags = dictContext.flags ^ smudgeFlag // remove the smudge flag
 	}
 
 	state = 0
