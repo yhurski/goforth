@@ -96,7 +96,11 @@ func searchDictionary(name string) *gfDict {
 
 	for {
 		if currentEntry.name == nameCap {
-			return currentEntry
+			smudgedWord := state == 1 && currentEntry.flags&smudgeFlag == smudgeFlag
+
+			if !smudgedWord {
+				return currentEntry
+			}
 		}
 
 		if currentEntry.prev == nil {
