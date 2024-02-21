@@ -321,8 +321,9 @@ func swapOp() {
 		return
 	}
 
-	dataStack.Push(operands[0])
-	dataStack.Push(operands[1])
+	operand1, operand2 := operands[0], operands[1]
+	dataStack.Push(operand2)
+	dataStack.Push(operand1)
 }
 
 func overOp() byte {
