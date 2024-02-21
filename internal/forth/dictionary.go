@@ -18,6 +18,7 @@ var codeSection []int = []int{}
 
 const (
 	immediateFlag = 0x1
+	smudgeFlag    = 0x2
 )
 
 func initDictionary() {
