@@ -238,6 +238,10 @@ func divOp() {
 		fmt.Println(err)
 		return
 	}
+	if operands[1] == 0 {
+		fmt.Println("Division by zero!")
+		return
+	}
 	sum := operands[0] / operands[1]
 	dataStack.Push(sum)
 }
