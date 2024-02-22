@@ -326,16 +326,17 @@ func swapOp() {
 	dataStack.Push(operand1)
 }
 
-func overOp() byte {
-	errCode := 0
-	if dataStack.Len() < 2 {
-		errCode = 1
-		return byte(errCode)
+func overOp() {
+	operands, err := dataStack.Popn(2)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	operand := (*dataStack)[dataStack.Len()-2]
-	dataStack.Push(operand)
 
-	return byte(errCode)
+	operand1, operand2 := operands[0], operands[1]
+	dataStack.Push(operand1)
+	dataStack.Push(operand2)
+	dataStack.Push(operand1)
 }
 
 func rotOp() {
