@@ -469,16 +469,11 @@ func executeOp() {
 }
 
 func colonOp() {
-	fmt.Println("!!! colon")
 	if state == 1 {
 		return // skip if already in compiling mode
 	}
 
 	word, _ := getWord()
-	// word, ok := getWord()
-	// if !ok { // no name provided, ignore silently
-	// 	return
-	// }
 
 	fmt.Printf("found word: %v\n", word)
 
