@@ -16,7 +16,7 @@ func (items *stack) Len() int {
 
 func (items *stack) Pop() (int, error) {
 	if items.Len() == 0 {
-		return -1, errors.New("Stack is empty")
+		return -1, errors.New("stack is empty")
 	}
 
 	result := (*items)[items.Len()-1:]
@@ -26,14 +26,17 @@ func (items *stack) Pop() (int, error) {
 }
 
 func (items *stack) Popn(number int) ([]int, error) {
+	var err error = nil
+
 	if items.Len() < number {
-		return *items, errors.New("Stack doesn't have enough elements")
+		number = items.Len()
+		err = errors.New("stack doesn't have enough elements")
 	}
 
 	result := (*items)[items.Len()-number:]
 	*items = stack((*items)[:items.Len()-number])
 
-	return result, nil
+	return result, err
 }
 
 func (items *stack) Push(item int) (result bool, err error) {
@@ -41,7 +44,7 @@ func (items *stack) Push(item int) (result bool, err error) {
 		*items = append(*items, item)
 		result, err = true, nil
 	} else {
-		result, err = false, errors.New("Stack is full!")
+		result, err = false, errors.New("stack is full")
 	}
 
 	return
