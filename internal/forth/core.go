@@ -21,3 +21,6 @@ var inputBuffer string
 
 // >in pointer
 var pIn int = 0
+
+// store error code of an instruciton
+var errorCode byte = 0
