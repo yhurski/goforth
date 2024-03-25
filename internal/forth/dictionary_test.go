@@ -51,6 +51,50 @@ func TestCreateDictionaryEntryAddsWord(t *testing.T) {
 	t.Cleanup(resetDictionary)
 }
 
+func TestSearchByName(t *testing.T) {
+	createDictionaryEntry("NEGATE", I_NEG, []int{I_NEG}, 0)
+	createDictionaryEntry("MOD", I_MOD, []int{I_MOD}, 0)
+	createDictionaryEntry("ABS", I_ABS, []int{I_ABS}, 0)
+
+	t.Run("When name is in upper case", func(t *testing.T) {
+		word := searchDictionary("MOD")
+		if word == nil {
+			t.Error("Word 'MOD' was added to dictionary but nil was found")
+		}
+	})
+
+	t.Run("When name is in lower case", func(t *testing.T) {
+		word := searchDictionary("abs")
+		if word == nil {
+			t.Error("Word 'ABS' was added to dictionary but nil was found")
+		}
+	})
+
+	t.Cleanup(resetDictionary)
+}
+
+func TestSearchByCode(t *testing.T) {
+	createDictionaryEntry("NEGATE", I_NEG, []int{I_NEG}, 0)
+	createDictionaryEntry("MOD", I_MOD, []int{I_MOD}, 0)
+	createDictionaryEntry("ABS", I_ABS, []int{I_ABS}, 0)
+
+	t.Run("When code is 'I_NEG'", func(t *testing.T) {
+		word := searchDictionaryByCode(I_NEG)
+		if word == nil {
+			t.Error("Code 'I_NEG' was added to dictionary but nil was found")
+		}
+	})
+
+	t.Run("When name is 'I_ABS'", func(t *testing.T) {
+		word := searchDictionaryByCode(I_ABS)
+		if word == nil {
+			t.Error("Code 'I_ABS' was added to dictionary but nil was found")
+		}
+	})
+
+	t.Cleanup(resetDictionary)
+}
+
 func resetDictionary() {
 	dictContext = nil
 	codeSection = nil
