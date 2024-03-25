@@ -95,6 +95,27 @@ func TestSearchByCode(t *testing.T) {
 	t.Cleanup(resetDictionary)
 }
 
+func TestIsMachineWord(t *testing.T) {
+	t.Run("'I_MULT' should be a machine word", func(t *testing.T) {
+		createDictionaryEntry("*", I_MULT, []int{I_MULT}, 0)
+
+		if !isMachineWord(dictContext) {
+			t.Error("'I_MULT' should be a machine word")
+		}
+	})
+
+	t.Run("'I_USER_DEFINED_WORD' should not be a machine word", func(t *testing.T) {
+		I_USER_DEFINED_WORD := lastPrimitiveId + 1
+		createDictionaryEntry("USER_DEFINED_WORD", uint32(I_USER_DEFINED_WORD), []int{I_USER_DEFINED_WORD}, 0)
+
+		if isMachineWord(dictContext) {
+			t.Error("'I_USER_DEFINED_WORD' should not be a machine word")
+		}
+	})
+
+	t.Cleanup(resetDictionary)
+}
+
 func resetDictionary() {
 	dictContext = nil
 	codeSection = nil
